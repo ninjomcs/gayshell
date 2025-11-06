@@ -21,7 +21,7 @@ function App() {
         <main ref={textRef}
               className="w-screen min-h-screen bg-gray-900 jetbrains-mono-term relative flex flex-col-reverse overflow-auto">
             <div className="grow">
-                {lines.map(line => <div className="h-5">{line}</div>)}
+                {lines.map(line => <div className="min-h-5 wrap-break-word">{line}</div>)}
                 <div className="flex gap-[1ch]">
                     <span>{prompt}</span>
                     <input type="text" autoFocus ref={inputRef} className="grow focus:outline-none" value={cursor}
