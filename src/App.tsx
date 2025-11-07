@@ -19,12 +19,12 @@ function App() {
 
     return (
         <main ref={textRef}
-              className="w-screen min-h-screen bg-gray-900 jetbrains-mono-term relative flex flex-col-reverse overflow-auto">
+              className="w-screen min-h-screen bg-gray-900 jetbrains-mono-term relative flex flex-col overflow-auto">
             <div className="grow">
                 {lines.map(line => <div className="min-h-5 wrap-break-word">{line}</div>)}
-                <div className="flex gap-[1ch]">
+                <div className="flex flex-wrap gap-x-[1ch] min-w-0">
                     <span>{prompt}</span>
-                    <input type="text" autoFocus ref={inputRef} className="grow focus:outline-none" value={cursor}
+                    <input type="text" autoFocus ref={inputRef} className="focus:outline-none" value={cursor}
                            onChange={(e) => setCursor(e.target.value)}
                            onBlur={() => {
                                if (inputRef.current) {
