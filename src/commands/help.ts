@@ -14,4 +14,4 @@ export const help: Command = {
     ],
     keepLines: true,
     usage: "help"
-}
+};

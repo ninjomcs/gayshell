@@ -5,4 +5,4 @@ export const echo: Command = {
     executor: (args) => args.length === 0 ? [" "] : [args.join(" ")],
     keepLines: true,
     usage: "echo [-neE] [arg ...]"
-}
+};

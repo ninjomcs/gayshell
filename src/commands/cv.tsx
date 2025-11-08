@@ -20,4 +20,4 @@ export const cv: Command = {
     ],
     keepLines: true,
     usage: "cv"
-}
+};

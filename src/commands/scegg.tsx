@@ -42,8 +42,8 @@ export const scegg: Command = {
             <pre className="leading-none">
                 <div key={i}>{line}</div>
             </pre>
-        ))
+        ));
     },
     keepLines: true,
     usage: "scegg"
-}
+};

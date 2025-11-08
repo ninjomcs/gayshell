@@ -5,4 +5,4 @@ export const clear: Command = {
     executor: () => [],
     keepLines: false,
     usage: "clear"
-}
+};
