@@ -21,7 +21,7 @@ function App() {
 
     return (
         <main ref={textRef}
-              className="w-screen min-h-svh bg-gray-900 jetbrains-mono-term relative flex flex-col overflow-y-auto overflow-x-hidden">
+              className="w-screen min-h-dvh bg-gray-900 jetbrains-mono-term relative flex flex-col overflow-y-auto overflow-x-hidden">
             <div className="grow pr-2 wrap-break-word">
                 {lines.map(line => <div className="min-h-5 wrap-break-word whitespace-pre-wrap">{line}</div>)}
                 <div className="flex flex-wrap gap-x-[1ch] min-w-0">
