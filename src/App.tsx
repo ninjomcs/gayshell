@@ -9,7 +9,7 @@ function App() {
     const [cursor, setCursor] = useState("");
     const inputRef = useRef<HTMLInputElement>(null);
     const textRef = useRef<HTMLDivElement>(null);
-    const prompt = "[user@ninjo.gay ~]$";
+    const prompt = `[${navigator.userAgent.split("0")[0] ?? "user"}@ninjo.gay ~]$`;
 
     useEffect(() => {
         if (textRef.current) {
@@ -19,12 +19,12 @@ function App() {
 
     return (
         <main ref={textRef}
-              className="w-screen min-h-screen bg-gray-900 jetbrains-mono-term relative flex flex-col overflow-auto">
-            <div className="grow">
-                {lines.map(line => <div className="min-h-5 wrap-break-word">{line}</div>)}
+              className="w-screen min-h-screen bg-gray-900 jetbrains-mono-term relative flex flex-col overflow-y-auto overflow-x-hidden">
+            <div className="grow pr-2 wrap-break-word">
+                {lines.map(line => <div className="min-h-5 wrap-break-word whitespace-pre-wrap">{line}</div>)}
                 <div className="flex flex-wrap gap-x-[1ch] min-w-0">
                     <span>{prompt}</span>
-                    <input type="text" autoFocus ref={inputRef} className="focus:outline-none" value={cursor}
+                    <input type="text" autoFocus ref={inputRef} className="focus:outline-none min-w-0 flex-1" value={cursor}
                            onChange={(e) => setCursor(e.target.value)}
                            onBlur={() => {
                                if (inputRef.current) {

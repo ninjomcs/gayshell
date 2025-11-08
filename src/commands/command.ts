@@ -1,8 +1,9 @@
 import { help } from "./help.ts";
 import { clear } from "./clear.ts";
 import { echo } from "./echo.ts";
-import { cv } from "./cv.ts";
+import { cv } from "./cv.tsx";
 import type { ReactNode } from "react";
+import { scegg } from "./scegg.tsx";
 
 export type Command = {
     name: string;
@@ -12,7 +13,7 @@ export type Command = {
 }
 
 
-export const commands = [help, clear, echo, cv];
+export const commands = [help, clear, echo, cv, scegg];
 
 export const execute = (name: string, currentLines: (string | React.ReactNode | `[user@ninjo.gay ~]$ ${string}`)[], args: string[]): (string | React.ReactNode)[] => {
     if (/^\s*$/.test(name)) {
