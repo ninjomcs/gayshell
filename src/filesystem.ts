@@ -1,8 +1,11 @@
+import  { type ReactNode } from "react";
+
 export type FileSystemNode = {
     name: string;
     subdirectories?: FileSystemNode[];
-    content?: string;
+    content?: (string | ReactNode)[];
     parent?: FileSystemNode;
+    binary?: Blob;
 }
 
 export const initial: FileSystemNode = {
@@ -21,12 +24,13 @@ export const makeDirectory = (workingDirectory: FileSystemNode, name: string): F
     return newDirectory;
 }
 
-export const createFile = (workingDirectory: FileSystemNode, name: string, content: string): FileSystemNode | undefined => {
-    if (workingDirectory.subdirectories?.find(node => node.name === name) !== undefined) return;
+export const createFile = (workingDirectory: FileSystemNode, name: string, content: (string | ReactNode)[], binary: Blob | undefined = undefined): FileSystemNode | undefined => {
+    workingDirectory.subdirectories = workingDirectory.subdirectories?.filter(node => node.name !== name);
     const file: FileSystemNode = {
         name,
         content,
-        parent: workingDirectory
+        parent: workingDirectory,
+        binary
     };
     workingDirectory.subdirectories?.push(file);
     return file;

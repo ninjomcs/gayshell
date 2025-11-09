@@ -1,8 +1,8 @@
-import type { Command } from "./command.ts";
+import type { Command, ExecOutput } from "./command.ts";
 
 export const clear: Command = {
     name: "clear",
-    executor: () => [],
+    executor: (): ExecOutput => ({ stdout: [] }),
     keepLines: false,
     usage: "clear"
 };

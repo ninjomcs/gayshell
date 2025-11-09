@@ -1,8 +1,8 @@
-import { type Command } from "./command.ts";
+import { type Command, type ExecOutput } from "./command.ts";
 
 export const scegg: Command = {
     name: "scegg",
-    executor: () => {
+    executor: (): ExecOutput => {
         const artLines = [
             "                      ##**        .......-*                ",
             "            - +  - -:.........................:            ",
@@ -38,11 +38,13 @@ export const scegg: Command = {
             "=------=====++=========++++++*****+++++++====----=------:::"
         ];
 
-        return artLines.map((line, i) => (
-            <pre className="leading-none">
-                <div key={i}>{line}</div>
+        const stdout = artLines.map((line, i) => (
+            <pre className="leading-none" key={i}>
+                <div>{line}</div>
             </pre>
         ));
+
+        return { stdout };
     },
     keepLines: true,
     usage: "scegg"

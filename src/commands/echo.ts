@@ -1,8 +1,12 @@
-import type { Command } from "./command.ts";
+import type { Command, ExecOutput } from "./command.ts";
 
 export const echo: Command = {
     name: "echo",
-    executor: (args) => args.length === 0 ? [" "] : [args.join(" ")],
+    executor: (args): ExecOutput => {
+        return {
+            stdout: args.length === 0 ? [" "] : [args.join(" ")]
+        };
+    },
     keepLines: true,
     usage: "echo [-neE] [arg ...]"
 };
