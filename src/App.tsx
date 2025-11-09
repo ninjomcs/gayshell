@@ -18,7 +18,11 @@ function App() {
         if (textRef.current) {
             textRef.current.scrollIntoView({block: "end"});
         }
-    }, [lines])
+    }, [lines]);
+
+    useEffect(() => {
+        document.title = prompt;
+    }, [prompt]);
 
     return (
         <main ref={textRef}
