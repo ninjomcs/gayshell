@@ -9,6 +9,7 @@ function App() {
     const [historyIndex, setHistoryIndex] = useState(0);
     const [cursor, setCursor] = useState("");
     const [workingDirectory, setWorkingDirectory] = useState<FileSystemNode>(initial);
+    const [executableWorker, setExecutableWorker] = useState<undefined | Worker>(undefined);
     const inputRef = useRef<HTMLInputElement>(null);
     const textRef = useRef<HTMLDivElement>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
@@ -47,16 +48,20 @@ function App() {
                                    for (const cmd of cursor.split("&&")) {
                                        const command = cmd.match(/(?:[^\s"]+|"[^"]*")+/g) ?? [""];
 
-                                       const { stdout, newWorkingDirectory, requestFile } = await execute(
+                                       const { newWorkingDirectory, requestFile, worker } = await execute(
                                            command[0],
-                                           newLines,
                                            currentWD,
-                                           command.slice(1)
+                                           command.slice(1),
+                                           (line) => {
+                                               newLines = [...newLines, line]
+                                               setLines(prev => [...prev, line])
+                                           }
                                        );
+
+                                       setExecutableWorker(worker ?? undefined);
 
                                        if (requestFile) fileInputRef.current?.click();
 
-                                       newLines = [...stdout];
                                        currentWD = newWorkingDirectory ?? currentWD;
                                    }
 
@@ -74,7 +79,6 @@ function App() {
                                    } else {
                                        setCursor(history[history.length - historyIndex - 1])
                                    }
-                                   console.log(historyIndex)
                                }
                                if (e.key === "ArrowDown") {
                                    if (historyIndex > 0) {
@@ -83,6 +87,14 @@ function App() {
                                    } else {
                                        setCursor("");
                                    }
+                               }
+                               if (e.ctrlKey && e.key === "c") {
+                                   if (executableWorker) setExecutableWorker(current => {
+                                       if (current) executableWorker.terminate();
+                                       setLines(prev => [...prev, "^C"]);
+                                       return undefined;
+                                   })
+                                   else setLines(prev => [...prev, prompt + " ^C"]);
                                }
                            }}/>
                 </div>

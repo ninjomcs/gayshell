@@ -17,7 +17,18 @@ export const createWasiImports = (
             proc_exit(): number {
                 return 0;
             },
+            clock_time_get(_clock_id: number, _precision: number, time: number): number {
+                const instance = instanceRef.instance;
+                if (!instance) throw new Error("WASM instance not assigned yet");
 
+                const memory = instance.exports.memory as WebAssembly.Memory;
+
+                const now = BigInt(Date.now()) * 1_000_000n;
+
+                new DataView(memory.buffer).setBigUint64(time, now, true);
+
+                return 0;
+            },
             fd_write(
                 fd: number,
                 iovsPtr: number,
@@ -55,21 +66,12 @@ export const createWasiImports = (
     };
 }
 
-export const executeWasm = async (wasmExecutable: Blob): Promise<string[]> => {
-    const instanceRef = {instance: undefined as WebAssembly.Instance | undefined};
-
-    const stdoutBuffer: string[] = [];
-
-    const imports = createWasiImports(instanceRef, {
-        onStdout(text) {
-            stdoutBuffer.push(text);
-        }
-    });
-
-    const wasm = await WebAssembly.instantiateStreaming(new Response(wasmExecutable), imports);
-    instanceRef.instance = wasm.instance;
-
-    (instanceRef.instance.exports._start as () => void)();
-
-    return stdoutBuffer;
+export const executeWasm = (wasmExecutable: Blob, onStdout: (line: string) => void): Worker => {
+    const worker = new Worker(new URL("./wasmWorker.ts", import.meta.url), { type: "module" });
+    worker.postMessage(wasmExecutable);
+    worker.onmessage = (e) => {
+        const msg: { type: "stdout", data: string } = e.data;
+        if (msg.type === "stdout") onStdout(msg.data);
+    }
+    return worker;
 }
